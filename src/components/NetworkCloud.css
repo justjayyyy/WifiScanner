@@ -1,0 +1,178 @@
+.network-cloud {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    perspective: 1000px;
+    contain: layout style paint;
+}
+
+/* Central Marker */
+.user-marker {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    z-index: 10;
+    will-change: transform;
+}
+
+.center-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #38bdf8;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #38bdf8;
+}
+
+.pulse-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(56, 189, 248, 0.5);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    will-change: transform, opacity;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate3d(-50%, -50%, 0) scale(0.5);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate3d(-50%, -50%, 0) scale(2.5);
+        opacity: 0;
+    }
+}
+
+.network-card {
+    position: absolute;
+    transform: translate3d(-50%, -50%, 0);
+    width: 120px;
+    padding: 6px 8px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, z-index 0s;
+    animation: float 4s ease-in-out infinite;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    will-change: transform;
+    contain: layout style paint;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.network-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    z-index: 1000;
+    transform: translate3d(-50%, -50%, 0) scale(1.15);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Connected Network Highlight */
+.network-card.connected {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.5);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), 0 4px 30px rgba(0, 0, 0, 0.1);
+    animation: float 4s ease-in-out infinite, connectedPulse 2s ease-in-out infinite;
+}
+
+@keyframes connectedPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(34, 197, 94, 0.5), 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.ssid-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2px;
+    line-height: 1.2;
+}
+
+.card-footer {
+    display: flex;
+    gap: 4px;
+    font-size: 0.6rem;
+    align-items: center;
+}
+
+.channel-tag,
+.freq-tag {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2px 5px;
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.55rem;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate3d(-50%, -50%, 0);
+    }
+
+    50% {
+        transform: translate3d(-50%, calc(-50% - 10px), 0);
+    }
+}
+
+/* Scanner Rings */
+.scanner-rings {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    border: 1px solid rgba(56, 189, 248, 0.1);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.05);
+}
+
+.ring-1 {
+    width: 50vmin;
+    height: 50vmin;
+}
+
+.ring-2 {
+    width: 100vmin;
+    height: 100vmin;
+}
+
+.ring-3 {
+    width: 150vmin;
+    height: 150vmin;
+    border-color: rgba(56, 189, 248, 0.05);
+}

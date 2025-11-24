@@ -1,0 +1,74 @@
+.panel {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 250px;
+    padding: 15px;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--grid-color);
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    color: var(--text-color);
+    z-index: 100;
+}
+
+.panel h3 {
+    margin-top: 0;
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--grid-color);
+    padding-bottom: 5px;
+}
+
+.panel button {
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(0, 240, 255, 0.1);
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    font-family: inherit;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.controlGroup {
+    margin-bottom: 15px;
+}
+
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.dpad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.dpadRow {
+    display: flex;
+    gap: 5px;
+}
+
+.dpad button {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.panel button:hover {
+    background-color: var(--accent-color);
+    color: #000;
+    box-shadow: 0 0 10px var(--accent-color);
+}
