@@ -53,7 +53,8 @@ app.get('/api/scan', (req, res) => {
                 signal_level: n.rssi,
                 channel: n.channel,
                 mac: n.bssid,
-                is_redacted: n.is_redacted
+                is_redacted: n.is_redacted,
+                is_connected: n.is_connected
             }));
 
             // Update cache

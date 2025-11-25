@@ -12,7 +12,21 @@ class WiFiScanner {
 
         do {
             let networks = try interface.scanForNetworks(withName: nil)
-            let uniqueNetworks = networks 
+            
+            // Deduplicate by channel - keep only one network per channel (strongest signal)
+            var channelMap: [Int: CWNetwork] = [:]
+            for network in networks {
+                let channel = network.wlanChannel?.channelNumber ?? 0
+                if let existing = channelMap[channel] {
+                    // Keep the one with stronger signal
+                    if network.rssiValue > existing.rssiValue {
+                        channelMap[channel] = network
+                    }
+                } else {
+                    channelMap[channel] = network
+                }
+            }
+            let uniqueNetworks = Array(channelMap.values) 
             
             // Get current connected network info
             let connectedSSID = interface.ssid()
