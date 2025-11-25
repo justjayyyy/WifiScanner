@@ -176,3 +176,46 @@
     height: 150vmin;
     border-color: rgba(56, 189, 248, 0.05);
 }
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .network-card {
+        width: 90px;
+        padding: 4px 6px;
+    }
+
+    .ssid-name {
+        font-size: 0.65rem;
+    }
+
+    .card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+
+    .channel-tag,
+    .freq-tag {
+        font-size: 0.5rem;
+        padding: 1px 3px;
+    }
+
+    .user-marker {
+        transform: translate3d(-50%, -50%, 0) scale(0.8);
+    }
+
+    .ring-1 {
+        width: 40vmin;
+        height: 40vmin;
+    }
+
+    .ring-2 {
+        width: 80vmin;
+        height: 80vmin;
+    }
+
+    .ring-3 {
+        width: 120vmin;
+        height: 120vmin;
+    }
+}
