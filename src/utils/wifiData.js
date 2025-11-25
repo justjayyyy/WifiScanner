@@ -30,37 +30,39 @@ export const fetchRealNodes = async () => {
 
         // Map real data to our node format
         // Use deterministic positioning based on network characteristics
-        const nodes = networks.map((net, index) => {
-            // Calculate rough distance from RSSI
-            // FSPL approximation: Distance = 10 ^ ((27.55 - (20 * log10(freq)) + |RSSI|) / 20)
-            // Simplified: Signal -30 is close (0m), -90 is far (100m)
-            const rssi = net.signal_level || -90;
-            const clampedRssi = Math.max(-90, Math.min(-30, rssi));
-            const distanceFactor = (Math.abs(clampedRssi) - 30) / 60; // 0 to 1
+        const nodes = networks
+            .filter(net => (net.signal_level || -90) > -85) // Filter out weak signals
+            .map((net, index) => {
+                // Calculate rough distance from RSSI
+                // FSPL approximation: Distance = 10 ^ ((27.55 - (20 * log10(freq)) + |RSSI|) / 20)
+                // Simplified: Signal -30 is close (0m), -90 is far (100m)
+                const rssi = net.signal_level || -90;
+                const clampedRssi = Math.max(-90, Math.min(-30, rssi));
+                const distanceFactor = (Math.abs(clampedRssi) - 30) / 60; // 0 to 1
 
-            // Deterministic position based on channel and MAC
-            // Create a simple hash from channel and mac to get consistent angle
-            const hashString = `${net.channel}_${net.mac}`;
-            let hash = 0;
-            for (let i = 0; i < hashString.length; i++) {
-                hash = ((hash << 5) - hash) + hashString.charCodeAt(i);
-                hash = hash & hash; // Convert to 32-bit integer
-            }
-            const angle = (Math.abs(hash) % 360) * (Math.PI / 180); // Convert hash to angle in radians
-            const radius = distanceFactor * 50; // Map to 0-50 units
+                // Deterministic position based on channel and MAC
+                // Create a simple hash from channel and mac to get consistent angle
+                const hashString = `${net.channel}_${net.mac}`;
+                let hash = 0;
+                for (let i = 0; i < hashString.length; i++) {
+                    hash = ((hash << 5) - hash) + hashString.charCodeAt(i);
+                    hash = hash & hash; // Convert to 32-bit integer
+                }
+                const angle = (Math.abs(hash) % 360) * (Math.PI / 180); // Convert hash to angle in radians
+                const radius = distanceFactor * 50; // Map to 0-50 units
 
-            return {
-                id: `real_${index}_${net.mac}`,
-                ssid: net.ssid,
-                x: Math.cos(angle) * radius,
-                y: Math.sin(angle) * radius,
-                baseSignalStrength: rssi,
-                channel: net.channel,
-                isReal: true,
-                isRedacted: net.is_redacted,
-                isConnected: net.is_connected || false
-            };
-        });
+                return {
+                    id: `real_${index}_${net.mac}`,
+                    ssid: net.ssid,
+                    x: Math.cos(angle) * radius,
+                    y: Math.sin(angle) * radius,
+                    baseSignalStrength: rssi,
+                    channel: net.channel,
+                    isReal: true,
+                    isRedacted: net.is_redacted,
+                    isConnected: net.is_connected || false
+                };
+            });
 
         // Apply collision detection to spread out overlapping nodes
         const minDistance = 8; // Minimum distance between nodes in units
