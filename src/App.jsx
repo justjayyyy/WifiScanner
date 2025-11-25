@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import NetworkCloud from './components/NetworkCloud';
-import { generateNodes, fetchRealNodes } from './utils/wifiData';
+import { fetchRealNodes } from './utils/wifiData';
 import './App.css';
 
 function App() {
@@ -16,8 +16,8 @@ function App() {
     if (realNodes.length > 0) {
       setNodes(realNodes);
     } else {
-      // Fallback to simulation if backend fails
-      setNodes(generateNodes(Math.floor(Math.random() * 5) + 3));
+      // No nodes found or backend failed - clear nodes instead of showing simulation
+      setNodes([]);
     }
     setIsScanning(false);
   }, []);
