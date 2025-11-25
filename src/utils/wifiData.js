@@ -28,7 +28,7 @@ export const fetchRealNodes = async () => {
 
         const networks = await response.json();
 
-        // Deduplicate by SSID (keep strongest signal) and filter weak signals
+        // Deduplicate by SSID+Channel (keep strongest signal) and filter weak signals
         const uniqueNetworks = new Map();
 
         networks.forEach(net => {
@@ -36,15 +36,18 @@ export const fetchRealNodes = async () => {
             // Filter out weak signals (< -80 dBm)
             if (rssi <= -80) return;
 
-            // If we already have this SSID, check if the new one is stronger
-            if (uniqueNetworks.has(net.ssid)) {
-                const existing = uniqueNetworks.get(net.ssid);
+            // Create unique key from SSID + Channel
+            const uniqueKey = `${net.ssid}_CH${net.channel}`;
+
+            // If we already have this SSID+Channel combo, check if the new one is stronger
+            if (uniqueNetworks.has(uniqueKey)) {
+                const existing = uniqueNetworks.get(uniqueKey);
                 const existingRssi = existing.signal_level || -90;
                 if (rssi > existingRssi) {
-                    uniqueNetworks.set(net.ssid, net);
+                    uniqueNetworks.set(uniqueKey, net);
                 }
             } else {
-                uniqueNetworks.set(net.ssid, net);
+                uniqueNetworks.set(uniqueKey, net);
             }
         });
 
