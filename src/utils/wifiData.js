@@ -31,7 +31,7 @@ export const fetchRealNodes = async () => {
         // Map real data to our node format
         // Use deterministic positioning based on network characteristics
         const nodes = networks
-            .filter(net => (net.signal_level || -90) > -85) // Filter out weak signals
+            .filter(net => (net.signal_level || -90) > -80) // Filter out signals with 0 bars (<= -80 dBm)
             .map((net, index) => {
                 // Calculate rough distance from RSSI
                 // FSPL approximation: Distance = 10 ^ ((27.55 - (20 * log10(freq)) + |RSSI|) / 20)
